@@ -186,14 +186,28 @@
     root.style.width = ""; root.style.maxWidth = ""; root.style.marginLeft = "";
     var avail = document.documentElement.clientWidth;
     if (avail < 1000) return;                       // narrow screens keep the column
-    // Do not widen out over a sidebar: only break out when our column stands alone.
-    var cell = root.parentElement;
-    while (cell && cell.parentElement && cell.parentElement.children.length === 1) cell = cell.parentElement;
-    if (cell && cell.parentElement) {
-      var busy = [].slice.call(cell.parentElement.children).some(function(sib){
-        return sib !== cell && sib.getBoundingClientRect().width > 0 && (sib.innerText || "").trim();
+    // Find the layout column we sit in: the outermost ancestor that is meaningfully
+    // narrower than its own parent. Counting children does not work, because the
+    // column also holds the page's heading and intro.
+    var node = root, col = null;
+    while (node.parentElement && node.parentElement !== document.body) {
+      var par = node.parentElement;
+      if (node.getBoundingClientRect().width < par.getBoundingClientRect().width - 16) col = node;
+      node = par;
+    }
+    // Refuse to widen over anything sitting BESIDE that column, such as a sidebar.
+    // Content stacked above or below it in the same column is not in the way.
+    if (col && col.parentElement) {
+      var cr = col.getBoundingClientRect();
+      var beside = [].slice.call(col.parentElement.children).some(function(sib){
+        if (sib === col) return false;
+        var sr = sib.getBoundingClientRect();
+        if (sr.width < 40 || sr.height < 40) return false;
+        var overlapsVertically = Math.min(cr.bottom, sr.bottom) - Math.max(cr.top, sr.top) > 40;
+        var sitsToTheSide = sr.right <= cr.left + 2 || sr.left >= cr.right - 2;
+        return overlapsVertically && sitsToTheSide;
       });
-      if (busy) return;
+      if (beside) return;
     }
     var target = Math.min(1400, avail - 48);
     var rect = root.getBoundingClientRect();
