@@ -31,6 +31,7 @@
   max-width:1080px; margin:0 auto; padding-block:8px;
   padding-inline:clamp(16px,4vw,24px);
   -webkit-font-smoothing:antialiased;
+  box-sizing:border-box;
 }
 #thhh-ecosystem *{box-sizing:border-box}
 /* The fragment is injected into someone else's page, so the host theme's rules for
@@ -75,6 +76,26 @@
 #thhh-ecosystem .e-mod{margin:var(--e-gap) 0 0;scroll-margin-top:64px}
 #thhh-ecosystem .e-mod-head{margin-bottom:20px}
 #thhh-ecosystem .e-host{min-height:120px}
+
+/* full-screen control */
+#thhh-ecosystem .e-figwrap{position:relative}
+#thhh-ecosystem .e-expand{position:absolute;top:0;right:0;z-index:3;display:inline-flex;align-items:center;
+  gap:7px;cursor:pointer;font:600 12.5px/1 inherit;color:var(--e-muted);
+  background:var(--e-surface);border:1px solid var(--e-rule);border-radius:999px;
+  padding:7px 13px 7px 11px;opacity:0;transition:opacity .15s ease,color .15s ease,border-color .15s ease}
+#thhh-ecosystem .e-figwrap:hover .e-expand,#thhh-ecosystem .e-expand:focus-visible{opacity:1}
+#thhh-ecosystem .e-expand:hover{color:var(--e-ink);border-color:var(--e-ink)}
+#thhh-ecosystem .e-expand-i{width:11px;height:11px;flex:0 0 auto;
+  border:2px solid currentColor;border-radius:2px;
+  clip-path:polygon(0 0,42% 0,42% 42%,0 42%,0 100%,100% 100%,100% 58%,58% 58%,58% 0,100% 0)}
+@media (hover:none){#thhh-ecosystem .e-expand{opacity:1}}
+#thhh-ecosystem .e-figwrap:fullscreen{background:var(--e-surface);padding:2.2vh 2vw;
+  display:flex;align-items:center;justify-content:center}
+#thhh-ecosystem .e-figwrap:fullscreen .e-expand{opacity:1;top:16px;right:16px}
+#thhh-ecosystem .e-figwrap:fullscreen .e-treemap{width:min(100%,158vh);max-width:100%}
+#thhh-ecosystem .e-figwrap:fullscreen .e-radialbox{width:min(100%,95vh)}
+#thhh-ecosystem .e-figwrap:fullscreen .mapbox,#thhh-ecosystem .e-figwrap:fullscreen svg{max-height:94vh}
+#thhh-ecosystem .e-figwrap:fullscreen .mapbox{width:min(100%,180vh)}
 #thhh-ecosystem .e-loading{color:var(--e-faint);font-size:14px;padding:28px 0}
 
 /* figures table toggle */
@@ -90,6 +111,7 @@
 #thhh-ecosystem th{font-weight:600;color:var(--e-muted);font-size:12.5px;text-transform:uppercase;letter-spacing:.04em}
 #thhh-ecosystem td.n,#thhh-ecosystem th.n{text-align:right;font-variant-numeric:tabular-nums;padding-right:0}
 
+#thhh-ecosystem.e-nofs .e-expand{display:none}
 #thhh-ecosystem .e-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 @media (prefers-reduced-motion:no-preference){
@@ -157,6 +179,63 @@
       sec.dataset.state = "error";
     });
   }
+  // The theme drops us in an 8-of-12 column, about 900px of a 1680px window, which
+  // leaves the map and the radial cramped. Widen to the site's own 1400px grid by
+  // measuring where we sit rather than assuming the column is centred.
+  function fitWide(){
+    root.style.width = ""; root.style.maxWidth = ""; root.style.marginLeft = "";
+    var avail = document.documentElement.clientWidth;
+    if (avail < 1000) return;                       // narrow screens keep the column
+    // Do not widen out over a sidebar: only break out when our column stands alone.
+    var cell = root.parentElement;
+    while (cell && cell.parentElement && cell.parentElement.children.length === 1) cell = cell.parentElement;
+    if (cell && cell.parentElement) {
+      var busy = [].slice.call(cell.parentElement.children).some(function(sib){
+        return sib !== cell && sib.getBoundingClientRect().width > 0 && (sib.innerText || "").trim();
+      });
+      if (busy) return;
+    }
+    var target = Math.min(1400, avail - 48);
+    var rect = root.getBoundingClientRect();
+    if (target <= rect.width + 8) return;           // already wide enough
+    root.style.width = target + "px";
+    root.style.maxWidth = "none";
+    root.style.marginLeft = ((avail - target) / 2 - rect.left) + "px";
+  }
+  fitWide();
+  var rt; window.addEventListener("resize", function(){
+    clearTimeout(rt); rt = setTimeout(fitWide, 150);
+  });
+
+  // full-screen controls, delegated because the modules arrive later
+  var FS = {
+    on: function(el){ return (el.requestFullscreen || el.webkitRequestFullscreen).call(el); },
+    off: function(){ return (document.exitFullscreen || document.webkitExitFullscreen).call(document); },
+    el:  function(){ return document.fullscreenElement || document.webkitFullscreenElement; }
+  };
+  var canFS = !!(document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen);
+  root.addEventListener("click", function(ev){
+    var btn = ev.target.closest && ev.target.closest(".e-expand");
+    if (!btn) return;
+    var wrap = btn.closest(".e-figwrap");
+    if (FS.el()) { FS.off(); return; }
+    try { FS.on(wrap); } catch (e) { /* nothing to do, the chart stays inline */ }
+  });
+  function syncFS(){
+    var open = FS.el();
+    root.querySelectorAll(".e-expand").forEach(function(btn){
+      var wrap = btn.closest(".e-figwrap");
+      var isOpen = open === wrap;
+      btn.querySelector(".e-expand-t").textContent = isOpen ? "Close" : "Full screen";
+      btn.setAttribute("aria-label",
+        (isOpen ? "Close the " : "Open the ") + btn.dataset.label + " full screen");
+    });
+    window.dispatchEvent(new Event("resize"));
+  }
+  document.addEventListener("fullscreenchange", syncFS);
+  document.addEventListener("webkitfullscreenchange", syncFS);
+  if (!canFS) root.classList.add("e-nofs");
+
   var secs = [].slice.call(root.querySelectorAll(".e-mod"));
   if("IntersectionObserver" in window){
     var io = new IntersectionObserver(function(es){
