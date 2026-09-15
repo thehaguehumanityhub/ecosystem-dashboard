@@ -1,0 +1,98 @@
+<style>
+#thhh-ecosystem .e-panel-row{display:grid;gap:30px;grid-template-columns:1fr}
+@media(min-width:860px){#thhh-ecosystem .e-panel-row{grid-template-columns:1fr 1fr;gap:34px}}
+#thhh-ecosystem .e-ptitle{font-size:15px;font-weight:600;color:var(--e-muted);margin:0 0 10px}
+#thhh-ecosystem .e-ptitle b{color:var(--e-ink);font-weight:700}
+#thhh-ecosystem .e-dot{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:9px}
+#thhh-ecosystem .e-panel{min-width:0}
+#thhh-ecosystem .e-chartwrap{position:relative;width:100%;min-width:0;max-width:100%}
+#thhh-ecosystem .e-chartwrap canvas{max-width:100%!important}
+</style>
+<div class="e-orgtypes">
+  <div class="e-panel-row">
+    <div class="e-panel">
+      <p class="e-ptitle"><span class="e-dot" style="background:var(--e-eco)"></span>The ecosystem <b>1,463 organisations</b></p>
+      <div class="e-chartwrap"><canvas id="e-c-eco" role="img" aria-label="Bar chart of ecosystem organisations by type. The figures are available in the table below."></canvas></div>
+    </div>
+    <div class="e-panel">
+      <p class="e-ptitle"><span class="e-dot" style="background:var(--e-mem)"></span>Active Hub members <b>213 organisations</b></p>
+      <div class="e-chartwrap"><canvas id="e-c-hub" role="img" aria-label="Bar chart of active Hub members by type. The figures are available in the table below."></canvas></div>
+    </div>
+  </div>
+  <details class="e-tbl-t"><summary>View the figures</summary><div class="e-tbl-w"><table><caption class="e-sr">Organisations by type</caption><thead><tr><th scope="col">Type of organisation</th><th scope="col" class="n">Ecosystem</th><th scope="col" class="n">Share</th><th scope="col" class="n">Active members</th><th scope="col" class="n">Share</th></tr></thead><tbody><tr><td>Non-Governmental Organisation (NGO)</td><td class="n">301</td><td class="n">20.6%</td><td class="n">70</td><td class="n">32.9%</td></tr><tr><td>International NGO (INGO)</td><td class="n">185</td><td class="n">12.6%</td><td class="n">29</td><td class="n">13.6%</td></tr><tr><td>Network/Alliance/Hub</td><td class="n">128</td><td class="n">8.7%</td><td class="n">21</td><td class="n">9.9%</td></tr><tr><td>Educational Institution</td><td class="n">120</td><td class="n">8.2%</td><td class="n">10</td><td class="n">4.7%</td></tr><tr><td>Research &amp; Policy Institute</td><td class="n">109</td><td class="n">7.5%</td><td class="n">11</td><td class="n">5.2%</td></tr><tr><td>Professional Service Providers</td><td class="n">109</td><td class="n">7.5%</td><td class="n">29</td><td class="n">13.6%</td></tr><tr><td>For-Profit Business/Corporation</td><td class="n">83</td><td class="n">5.7%</td><td class="n">4</td><td class="n">1.9%</td></tr><tr><td>Foundation/Philanthropic Organisation</td><td class="n">79</td><td class="n">5.4%</td><td class="n">5</td><td class="n">2.3%</td></tr><tr><td>Social Enterprise</td><td class="n">74</td><td class="n">5.1%</td><td class="n">24</td><td class="n">11.3%</td></tr><tr><td>Government</td><td class="n">61</td><td class="n">4.2%</td><td class="n">2</td><td class="n">0.9%</td></tr><tr><td>Embassy/Consulate</td><td class="n">60</td><td class="n">4.1%</td><td class="n">0</td><td class="n">0.0%</td></tr><tr><td>International Organisation (IO)</td><td class="n">58</td><td class="n">4.0%</td><td class="n">4</td><td class="n">1.9%</td></tr><tr><td>Media Organisation</td><td class="n">31</td><td class="n">2.1%</td><td class="n">3</td><td class="n">1.4%</td></tr><tr><td>Other</td><td class="n">28</td><td class="n">1.9%</td><td class="n">0</td><td class="n">0.0%</td></tr><tr><td>Impact Investors &amp; Blended Finance</td><td class="n">20</td><td class="n">1.4%</td><td class="n">1</td><td class="n">0.5%</td></tr><tr><td>Court/Tribunal</td><td class="n">11</td><td class="n">0.8%</td><td class="n">0</td><td class="n">0.0%</td></tr><tr><td>Trade Association</td><td class="n">4</td><td class="n">0.3%</td><td class="n">0</td><td class="n">0.0%</td></tr><tr><td>Political Party</td><td class="n">2</td><td class="n">0.1%</td><td class="n">0</td><td class="n">0.0%</td></tr></tbody></table></div></details>
+  <p class="e-foot">Bars show the number of organisations; the percentage is each type's share of that group. Organisations without a recorded type are excluded. Types with no members are omitted from the members chart. Source: The Hague Humanity Hub ecosystem database, September 2026.</p>
+</div>
+
+<script>
+(function(){
+  var D = {"rows": [{"l": "Non-Governmental Organisation (NGO)", "e": 301, "m": 70}, {"l": "International NGO (INGO)", "e": 185, "m": 29}, {"l": "Network/Alliance/Hub", "e": 128, "m": 21}, {"l": "Educational Institution", "e": 120, "m": 10}, {"l": "Research & Policy Institute", "e": 109, "m": 11}, {"l": "Professional Service Providers", "e": 109, "m": 29}, {"l": "For-Profit Business/Corporation", "e": 83, "m": 4}, {"l": "Foundation/Philanthropic Organisation", "e": 79, "m": 5}, {"l": "Social Enterprise", "e": 74, "m": 24}, {"l": "Government", "e": 61, "m": 2}, {"l": "Embassy/Consulate", "e": 60, "m": 0}, {"l": "International Organisation (IO)", "e": 58, "m": 4}, {"l": "Media Organisation", "e": 31, "m": 3}, {"l": "Other", "e": 28, "m": 0}, {"l": "Impact Investors & Blended Finance", "e": 20, "m": 1}, {"l": "Court/Tribunal", "e": 11, "m": 0}, {"l": "Trade Association", "e": 4, "m": 0}, {"l": "Political Party", "e": 2, "m": 0}], "ecoT": 1463, "hubT": 213};
+  function endLabel(colour, total){
+    return {id:'el'+colour, afterDatasetsDraw:function(ch){
+      var rows = ch.$rows, c = ch.ctx, meta = ch.getDatasetMeta(0);
+      meta.data.forEach(function(bar,i){
+        c.save(); c.textBaseline='middle'; c.textAlign='left';
+        var x = bar.x + 8, y = bar.y;
+        c.font = '700 12px Chivo, Arial, sans-serif'; c.fillStyle = colour;
+        c.fillText(rows[i].n, x, y);
+        var w = c.measureText(rows[i].n).width;
+        c.font = '12px Chivo, Arial, sans-serif'; c.fillStyle = '#6a7783';
+        c.fillText('  ' + (100*rows[i].n/total).toFixed(1) + '%', x + w, y);
+        c.restore();
+      });
+    }};
+  }
+  function build(id, key, total, colour){
+    var rows = D.rows.map(function(r){return {l:r.l, n:r[key]};})
+                     .filter(function(r){return r.n > 0;})
+                     .sort(function(a,b){return b.n - a.n;});
+    var cv = document.getElementById(id);
+    if(!cv) return;
+    var narrow = window.matchMedia('(max-width: 720px)').matches;
+    // long type names get clipped when Chart.js caps the axis width, so wrap them
+    var WRAP_AT = narrow ? 17 : 26;
+    function wrapLabel(t){
+      var words = String(t).split(' '), lines = [], cur = '';
+      words.forEach(function(w){
+        if((cur + ' ' + w).trim().length > WRAP_AT && cur){ lines.push(cur); cur = w; }
+        else { cur = (cur + ' ' + w).trim(); }
+      });
+      if(cur) lines.push(cur);
+      return lines.slice(0, 3);
+    }
+    var wrapped = rows.map(function(r){ return wrapLabel(r.l); });
+    var maxLines = Math.max.apply(null, wrapped.map(function(l){ return l.length; }));
+    cv.parentNode.style.height = (rows.length * (narrow ? 12 + maxLines * 14 : 29) + 26) + 'px';
+    var ch = new Chart(cv.getContext('2d'), {
+      type:'bar',
+      data:{labels: wrapped,
+            datasets:[{data: rows.map(function(r){return r.n;}),
+                       backgroundColor: colour, borderRadius: 4,
+                       borderWidth: 2, borderColor: '#ffffff'}]},
+      plugins:[endLabel(colour, total)],
+      options:{
+        indexAxis:'y', responsive:true, maintainAspectRatio:false,
+        categoryPercentage:0.9, barPercentage: narrow ? 0.5 : 0.62,
+        layout:{padding:{right:74}},
+        animation:{duration: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 500},
+        plugins:{legend:{display:false},
+          tooltip:{displayColors:false, backgroundColor:'#17345e', padding:10, cornerRadius:8,
+            callbacks:{
+              title:function(items){ return rows[items[0].dataIndex].l; },
+              label:function(c){
+              return c.parsed.x.toLocaleString() + '  ·  ' + (100*c.parsed.x/total).toFixed(1) + '% of ' + total.toLocaleString();
+            }}}},
+        scales:{
+          x:{display:false, grid:{display:false}, grace:'4%'},
+          y:{grid:{display:false}, border:{display:false},
+             afterFit:function(sc){ sc.width = Math.max(sc.width, narrow ? 118 : 178); },
+             ticks:{color:'#5a6b7b', font:{size: narrow ? 11.5 : 12.5, family:'Chivo, Arial, sans-serif'},
+                    crossAlign:'far', autoSkip:false}}
+        }
+      }
+    });
+    ch.$rows = rows; ch.update();
+  }
+  build('e-c-eco','e',D.ecoT, getComputedStyle(document.getElementById('thhh-ecosystem')).getPropertyValue('--e-eco').trim() || '#17345e');
+  build('e-c-hub','m',D.hubT, getComputedStyle(document.getElementById('thhh-ecosystem')).getPropertyValue('--e-mem').trim() || '#7d70b3');
+})();
+</script>
