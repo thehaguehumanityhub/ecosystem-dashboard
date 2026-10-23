@@ -1,0 +1,8 @@
+# Only the built, public files belong here.
+src/
+build/
+*.csv
+*.xlsx
+preview.html
+artifact.html
+.DS_Store

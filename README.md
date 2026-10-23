@@ -1,6 +1,7 @@
 # Ecosystem dashboard
 
-The Hague Humanity Hub's ecosystem dashboard, embedded on humanityhub.org.
+The Hague Humanity Hub's ecosystem dashboard, embedded at
+<https://www.humanityhub.org/ecosystem/ecosystem-in-numbers/>.
 
 This repository holds **only the built files that are served to the public**. It is
 public because jsDelivr can only serve public repositories.
@@ -14,29 +15,36 @@ public because jsDelivr can only serve public repositories.
 | `module-sdg.html` | Which goals does the work serve |
 
 Only `shell.html` is loaded up front. Each module is fetched the first time its section
-comes near the viewport, so a visitor who reads the first two sections never downloads
-the map or the SDG chart.
+comes near the viewport, so a visitor who reads the first two sectio## Served at
 
-## Served at
+Always from a specific commit, never `@main`:
 
 ```
-https://cdn.jsdelivr.net/gh/thehaguehumanityhub/ecosystem-dashboard@main/shell.html
+https://cdn.jsdelivr.net/gh/thehaguehumanityhub/ecosystem-dashboard@<commit>/shell.html
 ```
 
 The WordPress page carries one Shortcoder shortcode that fetches that URL and injects it
-inline. No iframe: humanityhub.org sends a `frame-src` allowlist as an HTTP header, and
-anything framed from outside it renders as a silent blank box.
+inline. It also sets `window.THHH_ECO_BASE` to the same commit folder, and the shell
+loads the four modules from there. No iframe: humanityhub.org sends a `frame-src`
+allowlist as an HTTP header, and anything framed from outside it renders as a silent
+blank box.
 
 ## Updating
 
-1. Rebuild in the working folder (not in this repository) and copy the five files here.
-2. Commit and push.
-3. jsDelivr caches for up to 12 hours. Open the purge link once for each changed file:
-   `https://purge.jsdelivr.net/gh/thehaguehumanityhub/ecosystem-dashboard@main/shell.html`
-4. Hard-refresh the page.
+1. Rebuild in the private working folder (not in this repository) and copy the five
+   files here.
+2. Commit and push, and note the new commit id.
+3. In WordPress, Shortcoder → ecosystem-dashboard, put the new commit id in the `URL`
+   line. Save and hard-refresh the page.
+
+A commit URL never changes, so there is nothing to purge. Do not switch back to `@main`:
+jsDelivr caches gzip and brotli copies separately, and a purge can leave browsers on a
+stale file while command-line checks look fine.
 
 Edit these files by hand only for visible wording, and even then prefer rebuilding: they
 are generated, and the GitHub web editor corrupts special characters in JavaScript.
+
+r corrupts special characters in JavaScript.
 
 ## Do not add the source data to this repository
 

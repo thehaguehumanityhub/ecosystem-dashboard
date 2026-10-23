@@ -158,7 +158,8 @@
 
 <script>
 (function(){
-  var BASE = "https://cdn.jsdelivr.net/gh/thehaguehumanityhub/ecosystem-dashboard@main/";
+  // the Shortcoder snippet sets this to the commit-pinned folder it fetched the shell from
+  var BASE = window.THHH_ECO_BASE || "https://cdn.jsdelivr.net/gh/thehaguehumanityhub/ecosystem-dashboard@main/";
   var root = document.getElementById("thhh-ecosystem");
   function load(sec){
     if(sec.dataset.state !== "idle") return;
